@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "package": "cc.prism.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "accessor.PlayerMoveC2SPacketAccessor"
+  ],
+  "client": [
+    "game.MixinMinecraftClient",
+    "render.MixinGameRenderer",
+    "render.MixinInGameHud",
+    "player.MixinClientPlayerEntity",
+    "player.MixinLivingEntity",
+    "network.MixinClientPlayNetworkHandler",
+    "network.MixinClientPlayNetworkHandlerReceive"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

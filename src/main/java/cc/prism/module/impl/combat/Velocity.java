@@ -7,17 +7,17 @@ import cc.prism.module.Category;
 import cc.prism.module.Module;
 import cc.prism.property.ModeProperty;
 import cc.prism.property.NumberProperty;
-import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 
 /**
- * Velocity — reduces or negates incoming knockback.
+ * Velocity â€” reduces or negates incoming knockback.
  *
  * Modes:
- *   Standard    – cancel the velocity packet entirely for the local player.
- *   Jump Reset  – let the packet through but immediately jump if the player is
+ *   Standard    â€“ cancel the velocity packet entirely for the local player.
+ *   Jump Reset  â€“ let the packet through but immediately jump if the player is
  *                 on the ground when hit (hurtTime == 9), optionally after a
  *                 configurable delay in ticks.
- *   Hypixel NCP – cancel only the horizontal components; keep vertical (Y)
+ *   Hypixel NCP â€“ cancel only the horizontal components; keep vertical (Y)
  *                 velocity so the server anti-cheat doesn't flag the player.
  */
 public class Velocity extends Module {
@@ -29,7 +29,7 @@ public class Velocity extends Module {
     private final NumberProperty jumpDelay = addProperty(
             new NumberProperty("Jump Delay", 0, 0, 10, 1));
 
-    // ── Internal state ───────────────────────────────────────────────────────
+    // â”€â”€ Internal state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /** Whether a velocity packet was received this cycle (Jump Reset mode). */
     private boolean receivedVelocity = false;
@@ -37,7 +37,7 @@ public class Velocity extends Module {
     /** Ticks elapsed since the velocity packet was received. */
     private int delayTicks = 0;
 
-    // ── Stored velocity components for Hypixel NCP mode ──────────────────────
+    // â”€â”€ Stored velocity components for Hypixel NCP mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private double pendingVelX = 0;
     private double pendingVelY = 0;
     private double pendingVelZ = 0;
@@ -46,7 +46,7 @@ public class Velocity extends Module {
         super("Velocity", "Reduces or cancels incoming knockback", Category.COMBAT);
     }
 
-    // ── Enable / Disable cleanup ─────────────────────────────────────────────
+    // â”€â”€ Enable / Disable cleanup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     @Override
     public void onDisable() {
@@ -54,12 +54,12 @@ public class Velocity extends Module {
         delayTicks = 0;
     }
 
-    // ── Packet interception ──────────────────────────────────────────────────
+    // â”€â”€ Packet interception â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     @EventTarget
     public void onPacket(PacketEvent event) {
         if (event.getDirection() != PacketEvent.Direction.RECEIVE) return;
-        if (!(event.getPacket() instanceof EntityVelocityUpdateS2CPacket packet)) return;
+        if (!(event.getPacket() instanceof ClientboundSetEntityMotionPacket packet)) return;
         if (mc.player == null) return;
         if (packet.getEntityId() != mc.player.getId()) return;
 
@@ -67,7 +67,7 @@ public class Velocity extends Module {
 
         switch (mode.getValue()) {
             case "Standard" -> {
-                // Drop the packet completely — no knockback applied at all.
+                // Drop the packet completely â€” no knockback applied at all.
                 event.setCancelled(true);
             }
 
@@ -88,7 +88,7 @@ public class Velocity extends Module {
         }
     }
 
-    // ── Tick logic ───────────────────────────────────────────────────────────
+    // â”€â”€ Tick logic â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     @EventTarget
     public void onTick(TickEvent event) {
@@ -102,7 +102,7 @@ public class Velocity extends Module {
         }
     }
 
-    // ── Mode helpers ─────────────────────────────────────────────────────────
+    // â”€â”€ Mode helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /**
      * Jump Reset: when the server sends a velocity packet (hurtTime spikes to 9)
@@ -115,7 +115,7 @@ public class Velocity extends Module {
         // catch it the tick it is decremented, which is the most common check point.
         boolean isHurt = mc.player.hurtTime >= 9;
         if (!isHurt) {
-            // Packet was received but hurtTime hasn't confirmed it yet — keep waiting.
+            // Packet was received but hurtTime hasn't confirmed it yet â€” keep waiting.
             return;
         }
 
@@ -139,10 +139,10 @@ public class Velocity extends Module {
     private void handleHypixelNCP() {
         if (pendingVelY == 0) return;
 
-        mc.player.setVelocity(
-                mc.player.getVelocity().x,
+        mc.player.setDeltaMovement(
+                mc.player.getDeltaMovement().x,
                 pendingVelY,
-                mc.player.getVelocity().z
+                mc.player.getDeltaMovement().z
         );
 
         // Zero out so we only apply once per packet.
@@ -151,3 +151,9 @@ public class Velocity extends Module {
         pendingVelZ = 0;
     }
 }
+
+
+
+
+
+

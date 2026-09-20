@@ -11,3 +11,9 @@ public class NoJumpDelay extends Module {
 
     // Logic applied in MixinClientPlayerEntity - checks isEnabled() there
 }
+
+
+
+
+
+

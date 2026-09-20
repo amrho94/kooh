@@ -6,10 +6,12 @@ import cc.prism.module.Module;
 import cc.prism.module.impl.client.InterfaceModule;
 import cc.prism.util.ColorUtil;
 import cc.prism.util.RenderUtil;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class ClickGuiScreen extends Screen {
     private long openTime;
 
     public ClickGuiScreen() {
-        super(Text.literal("ClickGUI"));
+        super(Component.literal("ClickGUI"));
     }
 
     @Override
@@ -40,21 +42,24 @@ public class ClickGuiScreen extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
         // Animate open (scale up from 0 to 1 over 150ms)
         animationProgress = Math.min(1f, (System.currentTimeMillis() - openTime) / 150f);
 
         // Dark overlay background
         context.fill(0, 0, width, height, 0x88000000);
 
-        // Scissor-safe rendering — render panels back to front
+        // Scissor-safe rendering â€” render panels back to front
         for (int i = panels.size() - 1; i >= 0; i--) {
             panels.get(i).render(context, mouseX, mouseY, animationProgress);
         }
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
         int mx = (int) mouseX, my = (int) mouseY;
         for (Panel panel : panels) {
             if (panel.mouseClicked(mx, my, button)) {
@@ -66,20 +71,26 @@ public class ClickGuiScreen extends Screen {
                 return true;
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(MouseButtonEvent event) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
         draggingPanel = null;
         for (Panel panel : panels) {
             panel.mouseReleased((int) mouseX, (int) mouseY, button);
         }
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(event);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
         if (draggingPanel != null) {
             draggingPanel.setPos((int) mouseX - dragOffsetX, (int) mouseY - dragOffsetY);
             return true;
@@ -87,7 +98,7 @@ public class ClickGuiScreen extends Screen {
         for (Panel panel : panels) {
             panel.mouseDragged((int) mouseX, (int) mouseY, button);
         }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.mouseDragged(event, deltaX, deltaY);
     }
 
     @Override
@@ -99,12 +110,15 @@ public class ClickGuiScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyEvent event) {
+        int keyCode = event.key();
+        int scanCode = event.scancode();
+        int modifiers = event.modifiers();
         // Forward typing to focused inputs
         for (Panel panel : panels) {
             if (panel.keyPressed(keyCode, scanCode, modifiers)) return true;
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
     @Override
@@ -125,3 +139,10 @@ public class ClickGuiScreen extends Screen {
         return true;
     }
 }
+
+
+
+
+
+
+

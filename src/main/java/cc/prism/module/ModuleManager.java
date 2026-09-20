@@ -66,7 +66,7 @@ public class ModuleManager {
                 .orElse(null);
     }
 
-    /** Returns enabled, non-hidden modules sorted A→Z for ArrayList rendering. */
+    /** Returns enabled, non-hidden modules sorted Aâ†’Z for ArrayList rendering. */
     public List<Module> getEnabledSorted() {
         return modules.stream()
                 .filter(Module::isEnabled)
@@ -81,3 +81,9 @@ public class ModuleManager {
         }
     }
 }
+
+
+
+
+
+

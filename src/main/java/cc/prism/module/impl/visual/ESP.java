@@ -8,13 +8,13 @@ import cc.prism.property.BooleanProperty;
 import cc.prism.property.ColorProperty;
 import cc.prism.property.ModeProperty;
 import cc.prism.util.RenderUtil;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.Camera;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.Camera;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
@@ -34,7 +34,7 @@ public class ESP extends Module {
     public void onRender2D(Render2DEvent event) {
         if (mc.player == null || mc.world == null) return;
 
-        DrawContext ctx = event.getContext();
+        GuiGraphicsExtractor ctx = event.getContext();
         int screenW = mc.getWindow().getScaledWidth();
         int screenH = mc.getWindow().getScaledHeight();
 
@@ -43,14 +43,14 @@ public class ESP extends Module {
         Matrix4f modelView = new Matrix4f(mc.gameRenderer.getCamera().getRotationMatrix());
 
         Camera camera = mc.gameRenderer.getCamera();
-        Vec3d camPos  = camera.getPos();
+        Vec3 camPos  = camera.position();
 
-        for (Entity entity : mc.world.getEntities()) {
-            if (entity == mc.player) continue;
-            if (!shouldRender(entity)) continue;
+        for (Entity Entity : mc.world.getEntities()) {
+            if (Entity == mc.player) continue;
+            if (!shouldRender(Entity)) continue;
 
             // Entity eye / center position interpolated
-            Vec3d entityPos = entity.getLerpedPos(event.getDelta()).add(0, entity.getEyeHeight(entity.getPose()) * 0.5, 0);
+            Vec3 entityPos = Entity.getLerpedPos(event.getDelta()).add(0, Entity.getEyeHeight(Entity.getPose()) * 0.5, 0);
 
             // Translate relative to camera
             double rx = entityPos.x - camPos.x;
@@ -63,10 +63,10 @@ public class ESP extends Module {
             int sx = (int) screen[0];
             int sy = (int) screen[1];
 
-            // Draw entity label
-            String name    = getEntityName(entity);
-            int    dist    = (int) mc.player.distanceTo(entity);
-            String label   = name + " §7[" + dist + "m]";
+            // Draw Entity label
+            String name    = getEntityName(Entity);
+            int    dist    = (int) mc.player.distanceTo(Entity);
+            String label   = name + " Â§7[" + dist + "m]";
             int    tw      = RenderUtil.textWidth(label);
             int    th      = RenderUtil.textHeight();
             int    col     = color.getColor();
@@ -97,21 +97,21 @@ public class ESP extends Module {
         }
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-    private boolean shouldRender(Entity entity) {
-        if (!(entity instanceof LivingEntity living)) return false;
-        if (living.isDead()) return false;
-        if (entity instanceof PlayerEntity) return players.getValue();
+    private boolean shouldRender(Entity Entity) {
+        if (!(Entity instanceof LivingEntity living)) return false;
+        if (living.isDeadOrDying()) return false;
+        if (Entity instanceof Player) return players.getValue();
         return mobs.getValue();
     }
 
-    private String getEntityName(Entity entity) {
-        if (entity instanceof PlayerEntity player) {
+    private String getEntityName(Entity Entity) {
+        if (Entity instanceof Player player) {
             return player.getGameProfile().getName();
         }
         // Trim the EntityType key for a clean name
-        String raw = entity.getType().toString();
+        String raw = Entity.getType().toString();
         if (raw.contains(":")) raw = raw.substring(raw.indexOf(':') + 1);
         // Capitalise first letter
         if (!raw.isEmpty()) raw = Character.toUpperCase(raw.charAt(0)) + raw.substring(1);
@@ -132,7 +132,7 @@ public class ESP extends Module {
 
         if (vec.w <= 0f) return null; // behind near plane
 
-        // NDC → screen
+        // NDC â†’ screen
         float ndcX =  vec.x / vec.w;
         float ndcY = -vec.y / vec.w;
 
@@ -143,7 +143,7 @@ public class ESP extends Module {
     }
 
     /** Draws the four L-shaped corner highlights of a rectangle. */
-    private static void drawCorners(DrawContext ctx,
+    private static void drawCorners(GuiGraphicsExtractor ctx,
                                     int x1, int y1, int x2, int y2,
                                     int len, int col) {
         // Top-left
@@ -160,3 +160,9 @@ public class ESP extends Module {
         ctx.fill(x2 - 1,   y2 - len, x2,     y2,       col);
     }
 }
+
+
+
+
+
+

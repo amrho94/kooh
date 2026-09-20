@@ -2,13 +2,13 @@ package cc.prism.module;
 
 import cc.prism.Prism;
 import cc.prism.property.Property;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Module {
-    protected static final MinecraftClient mc = MinecraftClient.getInstance();
+    protected static final Minecraft mc = Minecraft.getInstance();
 
     private final String name;
     private final String description;
@@ -55,7 +55,7 @@ public abstract class Module {
     public void onEnable()  {}
     public void onDisable() {}
 
-    // ── Getters / setters ────────────────────────────────────────────────────
+    // â”€â”€ Getters / setters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public String   getName()        { return name; }
     public String   getDescription() { return description; }
@@ -73,7 +73,13 @@ public abstract class Module {
     /** Display name shown in ArrayList (includes suffix if set). */
     public String getDisplayName() {
         if (suffix != null && !suffix.isEmpty())
-            return name + " §7[" + suffix + "]";
+            return name + " Â§7[" + suffix + "]";
         return name;
     }
 }
+
+
+
+
+
+

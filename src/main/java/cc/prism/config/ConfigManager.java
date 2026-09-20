@@ -22,7 +22,7 @@ public class ConfigManager {
     private final List<Config> configs = new ArrayList<>();
     private String currentConfig = "default";
 
-    // ── Constructor ───────────────────────────────────────────────────────────
+    // â”€â”€ Constructor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /**
      * Scans the configs directory on disk and populates the {@link #configs} list.
@@ -41,7 +41,7 @@ public class ConfigManager {
         }
     }
 
-    // ── Save / Load ───────────────────────────────────────────────────────────
+    // â”€â”€ Save / Load â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /**
      * Saves the config with the given name. If no matching {@link Config} exists
@@ -70,7 +70,7 @@ public class ConfigManager {
         }
     }
 
-    // ── File-level helpers ────────────────────────────────────────────────────
+    // â”€â”€ File-level helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /**
      * Returns all {@code .json} files present in the configs directory.
@@ -118,7 +118,7 @@ public class ConfigManager {
         configs.removeIf(c -> c.getName().equals(name));
     }
 
-    // ── Accessors ─────────────────────────────────────────────────────────────
+    // â”€â”€ Accessors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /** Returns all in-memory {@link Config} instances. */
     public List<Config> getLoadedConfigs() {
@@ -130,7 +130,7 @@ public class ConfigManager {
         return currentConfig;
     }
 
-    // ── Internal helpers ──────────────────────────────────────────────────────
+    // â”€â”€ Internal helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /**
      * Finds an existing {@link Config} by name, or creates and registers a new
@@ -152,3 +152,9 @@ public class ConfigManager {
                 .orElse(null);
     }
 }
+
+
+
+
+
+

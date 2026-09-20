@@ -4,10 +4,10 @@ import cc.prism.event.EventTarget;
 import cc.prism.event.impl.TickEvent;
 import cc.prism.module.Category;
 import cc.prism.module.Module;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.*;
+import net.minecraft.core.BlockPos;
 
 public class AutoTool extends Module {
 
@@ -19,13 +19,13 @@ public class AutoTool extends Module {
     public void onTick(TickEvent e) {
         if (mc.player == null || mc.world == null) return;
         if (mc.crosshairTarget == null) return;
-        if (!(mc.crosshairTarget instanceof net.minecraft.util.hit.BlockHitResult bhr)) return;
+        if (!(mc.crosshairTarget instanceof net.minecraft.world.phys.BlockHitResult bhr)) return;
 
         BlockPos pos = bhr.getBlockPos();
         BlockState state = mc.world.getBlockState(pos);
         if (state.isAir()) return;
 
-        PlayerInventory inv = mc.player.getInventory();
+        Inventory inv = mc.player.getInventory();
         int bestSlot = -1;
         float bestSpeed = -1f;
 
@@ -43,3 +43,9 @@ public class AutoTool extends Module {
         }
     }
 }
+
+
+
+
+
+

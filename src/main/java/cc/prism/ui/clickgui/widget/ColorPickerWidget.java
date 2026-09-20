@@ -2,12 +2,12 @@ package cc.prism.ui.clickgui.widget;
 
 import cc.prism.property.ColorProperty;
 import cc.prism.util.RenderUtil;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.awt.Color;
 
 /**
- * Color picker widget — shows a hue strip + saturation/brightness square + hex preview.
+ * Color picker widget â€” shows a hue strip + saturation/brightness square + hex preview.
  * Expands when clicked.
  */
 public class ColorPickerWidget extends AbstractWidget {
@@ -48,7 +48,7 @@ public class ColorPickerWidget extends AbstractWidget {
     }
 
     @Override
-    public void render(DrawContext ctx, int x, int y, int w, int mx, int my) {
+    public void render(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
         // Header row
         RenderUtil.fillRect(ctx, x, y, x + w, y + AbstractWidget.HEIGHT, 0xBB161616);
         RenderUtil.drawText(ctx, " " + property.getName(), x + 4, y + 2, 0xFFCCCCCC, false);
@@ -82,7 +82,7 @@ public class ColorPickerWidget extends AbstractWidget {
         RenderUtil.fillRect(ctx, hueCurX - 1, hueY - 1, hueCurX + 1, hueY + HUE_H + 1, 0xFFFFFFFF);
     }
 
-    private void renderSVSquare(DrawContext ctx, int x, int y, int w, int h) {
+    private void renderSVSquare(GuiGraphicsExtractor ctx, int x, int y, int w, int h) {
         // Approximate with 16 columns
         int steps = 16;
         int hueRgb = Color.HSBtoRGB(hue, 1f, 1f);
@@ -100,7 +100,7 @@ public class ColorPickerWidget extends AbstractWidget {
         }
     }
 
-    private void renderHueBar(DrawContext ctx, int x, int y, int w, int h) {
+    private void renderHueBar(GuiGraphicsExtractor ctx, int x, int y, int w, int h) {
         int steps = 32;
         for (int i = 0; i < steps; i++) {
             float h1 = (float) i / steps;
@@ -113,7 +113,7 @@ public class ColorPickerWidget extends AbstractWidget {
 
     @Override
     public boolean mouseClicked(int mx, int my, int button, int x, int y, int w) {
-        // Header click — toggle open
+        // Header click â€” toggle open
         if (my >= y && my <= y + AbstractWidget.HEIGHT && mx >= x && mx <= x + w) {
             if (button == 0) {
                 open = !open;
@@ -170,3 +170,9 @@ public class ColorPickerWidget extends AbstractWidget {
         applyHSB();
     }
 }
+
+
+
+
+
+

@@ -3,7 +3,7 @@ package cc.prism.ui.clickgui.widget;
 import cc.prism.module.impl.client.InterfaceModule;
 import cc.prism.property.ModeProperty;
 import cc.prism.util.RenderUtil;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class ModeWidget extends AbstractWidget {
     private final ModeProperty property;
@@ -13,7 +13,7 @@ public class ModeWidget extends AbstractWidget {
     }
 
     @Override
-    public void render(DrawContext ctx, int x, int y, int w, int mx, int my) {
+    public void render(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
         int accent = InterfaceModule.accentColor.getColor();
         RenderUtil.fillRect(ctx, x, y, x + w, y + HEIGHT, 0xBB161616);
         RenderUtil.drawText(ctx, " " + property.getName(), x + 4, y + 2, 0xFFCCCCCC, false);
@@ -38,3 +38,9 @@ public class ModeWidget extends AbstractWidget {
         return false;
     }
 }
+
+
+
+
+
+

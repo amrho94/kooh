@@ -3,7 +3,7 @@ package cc.prism.ui.clickgui.widget;
 import cc.prism.module.impl.client.InterfaceModule;
 import cc.prism.property.BooleanProperty;
 import cc.prism.util.RenderUtil;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class BooleanWidget extends AbstractWidget {
     private final BooleanProperty property;
@@ -13,7 +13,7 @@ public class BooleanWidget extends AbstractWidget {
     }
 
     @Override
-    public void render(DrawContext ctx, int x, int y, int w, int mx, int my) {
+    public void render(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
         boolean val = property.getValue();
         int accent = InterfaceModule.accentColor.getColor();
 
@@ -26,7 +26,7 @@ public class BooleanWidget extends AbstractWidget {
         int cbSize = 8;
         RenderUtil.fillRect(ctx, cbX, cbY, cbX + cbSize, cbY + cbSize, val ? accent : 0xFF444444);
         if (val) {
-            RenderUtil.drawText(ctx, "✔", cbX + 1, cbY, 0xFFFFFFFF, false);
+            RenderUtil.drawText(ctx, "âœ”", cbX + 1, cbY, 0xFFFFFFFF, false);
         }
 
         // Property name
@@ -42,3 +42,9 @@ public class BooleanWidget extends AbstractWidget {
         return false;
     }
 }
+
+
+
+
+
+

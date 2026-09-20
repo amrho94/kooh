@@ -23,3 +23,9 @@ public abstract class Property<T> {
 
     public abstract String getDisplayValue();
 }
+
+
+
+
+
+

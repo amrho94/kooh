@@ -21,3 +21,9 @@ public class ColorProperty extends Property<Integer> {
         return toHex();
     }
 }
+
+
+
+
+
+

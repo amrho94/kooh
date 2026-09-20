@@ -9,25 +9,25 @@ import cc.prism.property.ModeProperty;
 import cc.prism.property.NumberProperty;
 import cc.prism.util.RotationUtil;
 import cc.prism.util.TimerUtil;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionHand;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * KillAura — automatically attacks valid nearby entities.
+ * KillAura â€” automatically attacks valid nearby entities.
  *
  * Properties:
- *   Target       – Players / Mobs / All
- *   Range        – maximum attack distance (blocks)
- *   CPS          – clicks (attacks) per second
- *   Rotate       – silently snap rotations to the target
- *   Through Walls – attack through solid blocks (no visibility check)
- *   W-Tap        – briefly cancel sprint before each attack to boost crit/
+ *   Target       â€“ Players / Mobs / All
+ *   Range        â€“ maximum attack distance (blocks)
+ *   CPS          â€“ clicks (attacks) per second
+ *   Rotate       â€“ silently snap rotations to the target
+ *   Through Walls â€“ attack through solid blocks (no visibility check)
+ *   W-Tap        â€“ briefly cancel sprint before each attack to boost crit/
  *                  damage-reset mechanics then re-enable sprint afterward
  */
 public class KillAura extends Module {
@@ -52,23 +52,23 @@ public class KillAura extends Module {
         // Throttle attacks to the configured CPS.
         if (!attackTimer.hasReached(1000.0 / cps.getInt())) return;
 
-        // ── Build target list ────────────────────────────────────────────────
+        // â”€â”€ Build target list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         List<Entity> targets = new ArrayList<>();
-        for (Entity entity : mc.world.getEntities()) {
-            if (!isValidTarget(entity)) continue;
-            if (mc.player.distanceTo(entity) > range.getFloat()) continue;
+        for (Entity Entity : mc.world.getEntities()) {
+            if (!isValidTarget(Entity)) continue;
+            if (mc.player.distanceTo(Entity) > range.getFloat()) continue;
 
-            // Visibility check — skip if Through Walls is off and no clear LOS.
+            // Visibility check â€” skip if Through Walls is off and no clear LOS.
             if (!throughWalls.getValue()) {
                 if (mc.world.raycastBlock(
                         mc.player.getEyePos(),
-                        entity.getPos().add(0, entity.getHeight() / 2.0, 0),
+                        Entity.position().add(0, Entity.getHeight() / 2.0, 0),
                         net.minecraft.block.ShapeContext.absent()) != null) {
                     continue;
                 }
             }
 
-            targets.add(entity);
+            targets.add(Entity);
         }
 
         if (targets.isEmpty()) return;
@@ -77,21 +77,21 @@ public class KillAura extends Module {
         targets.sort(Comparator.comparingDouble(mc.player::distanceTo));
         Entity target = targets.get(0);
 
-        // ── Rotate silently toward target ────────────────────────────────────
+        // â”€â”€ Rotate silently toward target â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if (rotate.getValue()) {
             float[] rots = RotationUtil.getRotationsToEntity(target);
-            mc.player.setYaw(rots[0]);
-            mc.player.setPitch(rots[1]);
+            mc.player.setYRot(rots[0]);
+            mc.player.setXRot(rots[1]);
         }
 
-        // ── W-Tap: cancel sprint → attack → re-enable sprint ────────────────
+        // â”€â”€ W-Tap: cancel sprint â†’ attack â†’ re-enable sprint â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if (wTap.getValue()) {
             mc.player.setSprinting(false);
         }
 
-        // ── Perform attack ───────────────────────────────────────────────────
-        mc.interactionManager.attackEntity(mc.player, target);
-        mc.player.swingHand(Hand.MAIN_HAND);
+        // â”€â”€ Perform attack â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        mc.gameMode.attack(mc.player, target);
+        mc.player.swing(InteractionHand.MAIN_HAND);
         attackTimer.reset();
 
         // Re-enable sprint after attack if W-Tap is active.
@@ -100,18 +100,24 @@ public class KillAura extends Module {
         }
     }
 
-    // ── Target validation ────────────────────────────────────────────────────
+    // â”€â”€ Target validation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-    private boolean isValidTarget(Entity entity) {
-        if (entity == mc.player)                       return false;
-        if (!(entity instanceof LivingEntity living))  return false;
-        if (living.isDead())                           return false;
+    private boolean isValidTarget(Entity Entity) {
+        if (Entity == mc.player)                       return false;
+        if (!(Entity instanceof LivingEntity living))  return false;
+        if (living.isDeadOrDying())                           return false;
 
         return switch (targetMode.getValue()) {
-            case "Players" -> entity instanceof PlayerEntity;
-            case "Mobs"    -> !(entity instanceof PlayerEntity);
+            case "Players" -> Entity instanceof Player;
+            case "Mobs"    -> !(Entity instanceof Player);
             case "All"     -> true;
             default        -> false;
         };
     }
 }
+
+
+
+
+
+

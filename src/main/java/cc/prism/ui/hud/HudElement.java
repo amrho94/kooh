@@ -1,6 +1,6 @@
 package cc.prism.ui.hud;
 
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 /** Base class for HUD elements rendered via Render2DEvent. */
 public abstract class HudElement {
@@ -11,10 +11,16 @@ public abstract class HudElement {
         this.y = y;
     }
 
-    public abstract void render(DrawContext ctx, float delta);
+    public abstract void render(GuiGraphicsExtractor ctx, float delta);
 
     public int getX() { return x; }
     public int getY() { return y; }
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
 }
+
+
+
+
+
+

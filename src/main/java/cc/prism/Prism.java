@@ -6,10 +6,11 @@ import cc.prism.module.ModuleManager;
 import cc.prism.ui.clickgui.ClickGuiScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.Identifier;
+import com.mojang.blaze3d.platform.InputConstants;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,8 @@ public class Prism implements ClientModInitializer {
     public static ModuleManager MODULE_MANAGER;
     public static ConfigManager CONFIG_MANAGER;
 
-    private static KeyBinding guiKey;
+    private static final KeyMapping.Category PRISM_CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("prism", "category"));
+    private static KeyMapping guiKey;
 
     @Override
     public void onInitializeClient() {
@@ -32,18 +34,13 @@ public class Prism implements ClientModInitializer {
         CONFIG_MANAGER = new ConfigManager();
 
         // Register ClickGUI keybind (Right Shift)
-        guiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.prism.clickgui",
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_RIGHT_SHIFT,
-                "category.prism"
-        ));
+        guiKey = KeyMappingHelper.registerKeyBinding(new KeyMapping("key.prism.clickgui", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, PRISM_CATEGORY));
 
         // Module keybinds + ClickGUI open
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             // ClickGUI open
-            while (guiKey.wasPressed()) {
-                if (client.currentScreen == null) {
+            while (guiKey.consumeClick()) {
+                if (client.screen == null) {
                     client.setScreen(new ClickGuiScreen());
                 }
             }
@@ -63,7 +60,15 @@ public class Prism implements ClientModInitializer {
     }
 
     /** Convenience getter for accessing the client instance statically. */
-    public static MinecraftClient mc() {
-        return MinecraftClient.getInstance();
+    public static Minecraft mc() {
+        return Minecraft.getInstance();
     }
 }
+
+
+
+
+
+
+
+

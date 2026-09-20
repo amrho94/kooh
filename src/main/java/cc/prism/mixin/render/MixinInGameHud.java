@@ -4,9 +4,9 @@ import cc.prism.Prism;
 import cc.prism.event.impl.Render2DEvent;
 import cc.prism.ui.hud.ArrayListHud;
 import cc.prism.ui.hud.Watermark;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.InGameHud;
+import net.minecraft.client.DeltaTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,7 +18,7 @@ public abstract class MixinInGameHud {
     private static final ArrayListHud ARRAYLIST = new ArrayListHud();
 
     @Inject(method = "render", at = @At("TAIL"))
-    private void onRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+    private void onRender(GuiGraphicsExtractor context, DeltaTracker tickCounter, CallbackInfo ci) {
         if (Prism.MODULE_MANAGER == null) return;
 
         float delta = tickCounter.getTickDelta(true);
@@ -31,3 +31,9 @@ public abstract class MixinInGameHud {
         ARRAYLIST.render(context, delta);
     }
 }
+
+
+
+
+
+

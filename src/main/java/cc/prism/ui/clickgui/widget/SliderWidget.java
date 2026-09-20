@@ -3,7 +3,7 @@ package cc.prism.ui.clickgui.widget;
 import cc.prism.module.impl.client.InterfaceModule;
 import cc.prism.property.NumberProperty;
 import cc.prism.util.RenderUtil;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class SliderWidget extends AbstractWidget {
     private static final int TRACK_H  = 3;
@@ -20,14 +20,14 @@ public class SliderWidget extends AbstractWidget {
     public int getHeight() { return 20; }
 
     @Override
-    public void render(DrawContext ctx, int x, int y, int w, int mx, int my) {
+    public void render(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
         int accent = InterfaceModule.accentColor.getColor();
 
         // Background
         RenderUtil.fillRect(ctx, x, y, x + w, y + getHeight(), 0xBB161616);
 
         // Label + value
-        String label = " " + property.getName() + " §8" + property.getDisplayValue();
+        String label = " " + property.getName() + " Â§8" + property.getDisplayValue();
         RenderUtil.drawText(ctx, label, x + PADDING, y + 2, 0xFFCCCCCC, false);
 
         // Track
@@ -77,3 +77,9 @@ public class SliderWidget extends AbstractWidget {
         property.setValue(raw);
     }
 }
+
+
+
+
+
+

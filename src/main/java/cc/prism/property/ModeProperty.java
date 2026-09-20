@@ -29,3 +29,9 @@ public class ModeProperty extends Property<String> {
         return value;
     }
 }
+
+
+
+
+
+

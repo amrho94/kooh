@@ -6,8 +6,8 @@ import cc.prism.module.Module;
 import cc.prism.module.impl.client.InterfaceModule;
 import cc.prism.util.ColorUtil;
 import cc.prism.util.RenderUtil;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +15,9 @@ import java.util.List;
 /**
  * A per-category draggable panel in the ClickGUI.
  * Layout:
- *   [Header: CategoryName  X  count]     ← 16px
- *   [ModuleButton]                         ← 14px each
- *     [settings expanded inline]           ← variable height
+ *   [Header: CategoryName  X  count]     â† 16px
+ *   [ModuleButton]                         â† 14px each
+ *     [settings expanded inline]           â† variable height
  */
 public class Panel {
     public static final int WIDTH  = 140;
@@ -38,9 +38,9 @@ public class Panel {
         }
     }
 
-    // ── Rendering ─────────────────────────────────────────────────────────────
+    // â”€â”€ Rendering â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-    public void render(DrawContext ctx, int mx, int my, float anim) {
+    public void render(GuiGraphicsExtractor ctx, int mx, int my, float anim) {
         int accent = InterfaceModule.accentColor.getColor();
 
         // Header
@@ -51,10 +51,10 @@ public class Panel {
         // Category name
         String label = category.getName();
         int enabledCount = (int) buttons.stream().filter(b -> b.getModule().isEnabled()).count();
-        String countStr = " §8" + enabledCount;
-        RenderUtil.drawText(ctx, "§f" + label + countStr, x + 5, y + 4, 0xFFFFFFFF, false);
+        String countStr = " Â§8" + enabledCount;
+        RenderUtil.drawText(ctx, "Â§f" + label + countStr, x + 5, y + 4, 0xFFFFFFFF, false);
         // Collapse arrow
-        String arrow = collapsed ? "▸" : "▾";
+        String arrow = collapsed ? "â–¸" : "â–¾";
         RenderUtil.drawText(ctx, arrow, x + WIDTH - 10, y + 4, 0xFFAAAAAA, false);
 
         if (collapsed) return;
@@ -81,7 +81,7 @@ public class Panel {
         return HEADER + (collapsed ? 0 : getBodyHeight());
     }
 
-    // ── Input ─────────────────────────────────────────────────────────────────
+    // â”€â”€ Input â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public boolean mouseClicked(int mx, int my, int button) {
         // Header click
@@ -148,7 +148,7 @@ public class Panel {
         return false;
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public boolean isHoveringHeader(int mx, int my) {
         return mx >= x && mx <= x + WIDTH && my >= y && my <= y + HEADER;
@@ -164,3 +164,9 @@ public class Panel {
     public Category getCategory() { return category; }
     public boolean isCollapsed() { return collapsed; }
 }
+
+
+
+
+
+

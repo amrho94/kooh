@@ -29,3 +29,9 @@ public class NumberProperty extends Property<Double> {
         return String.format("%.1f", value);
     }
 }
+
+
+
+
+
+

@@ -5,17 +5,17 @@ import cc.prism.module.Module;
 import cc.prism.module.impl.client.InterfaceModule;
 import cc.prism.util.ColorUtil;
 import cc.prism.util.RenderUtil;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.List;
 
 /**
- * Right-side ArrayList showing enabled modules sorted A→Z.
- * Each line gets a gradient color from purple→pink (matching screenshot 2).
+ * Right-side ArrayList showing enabled modules sorted Aâ†’Z.
+ * Each line gets a gradient color from purpleâ†’pink (matching screenshot 2).
  */
 public class ArrayListHud extends HudElement {
-    private static final MinecraftClient mc = MinecraftClient.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
     private static final int PADDING_X = 4;
     private static final int LINE_HEIGHT = 10;
 
@@ -24,9 +24,9 @@ public class ArrayListHud extends HudElement {
     }
 
     @Override
-    public void render(DrawContext ctx, float delta) {
+    public void render(GuiGraphicsExtractor ctx, float delta) {
         if (!InterfaceModule.arrayList.getValue()) return;
-        if (mc.currentScreen != null && !(mc.currentScreen instanceof cc.prism.ui.clickgui.ClickGuiScreen)) return;
+        if (mc.screen != null && !(mc.screen instanceof cc.prism.ui.clickgui.ClickGuiScreen)) return;
 
         List<Module> enabled = Prism.MODULE_MANAGER.getEnabledSorted();
         if (enabled.isEmpty()) return;
@@ -46,7 +46,7 @@ public class ArrayListHud extends HudElement {
             // Background bar
             RenderUtil.fillRect(ctx, x - 2, y, screenW, y + LINE_HEIGHT, 0xAA0D0D0D);
 
-            // Color gradient: purple→pink based on index
+            // Color gradient: purpleâ†’pink based on index
             int color = InterfaceModule.rainbowMode.getValue()
                     ? ColorUtil.rainbow((float) i / total)
                     : ColorUtil.arrayListColor(i, total);
@@ -58,3 +58,9 @@ public class ArrayListHud extends HudElement {
         }
     }
 }
+
+
+
+
+
+

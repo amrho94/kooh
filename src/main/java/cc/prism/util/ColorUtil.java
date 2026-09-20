@@ -25,19 +25,19 @@ public class ColorUtil {
         );
     }
 
-    /** Apply an alpha multiplier (0.0–1.0) to an existing ARGB color. */
+    /** Apply an alpha multiplier (0.0â€“1.0) to an existing ARGB color. */
     public static int withAlpha(int color, float alpha) {
         return (color & 0x00FFFFFF) | ((int)(alpha * 255) << 24);
     }
 
-    /** Rainbow color based on time offset (0–1). */
+    /** Rainbow color based on time offset (0â€“1). */
     public static int rainbow(float offset) {
         float hue = (System.currentTimeMillis() % 2000 / 2000f + offset) % 1f;
         return java.awt.Color.HSBtoRGB(hue, 0.6f, 1.0f) | 0xFF000000;
     }
 
     /**
-     * Generates the purple→pink gradient used by the ArrayList HUD.
+     * Generates the purpleâ†’pink gradient used by the ArrayList HUD.
      * @param index  module index (0 = top)
      * @param total  total enabled modules
      */
@@ -49,3 +49,9 @@ public class ColorUtil {
         return lerp(purple, pink, t);
     }
 }
+
+
+
+
+
+

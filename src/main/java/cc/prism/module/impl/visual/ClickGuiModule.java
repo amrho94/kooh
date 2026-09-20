@@ -11,3 +11,9 @@ public class ClickGuiModule extends Module {
         setHidden(true);
     }
 }
+
+
+
+
+
+

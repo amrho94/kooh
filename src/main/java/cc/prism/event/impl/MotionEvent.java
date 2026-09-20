@@ -24,15 +24,21 @@ public class MotionEvent extends Event {
     public double getX() { return x; }
     public double getY() { return y; }
     public double getZ() { return z; }
-    public float getYaw() { return yaw; }
-    public float getPitch() { return pitch; }
+    public float getYRot() { return yaw; }
+    public float getXRot() { return pitch; }
     public boolean isOnGround() { return onGround; }
     public Stage getStage() { return stage; }
 
     public void setX(double x) { this.x = x; }
     public void setY(double y) { this.y = y; }
     public void setZ(double z) { this.z = z; }
-    public void setYaw(float yaw) { this.yaw = yaw; }
-    public void setPitch(float pitch) { this.pitch = pitch; }
+    public void setYRot(float yaw) { this.yaw = yaw; }
+    public void setXRot(float pitch) { this.pitch = pitch; }
     public void setOnGround(boolean onGround) { this.onGround = onGround; }
 }
+
+
+
+
+
+

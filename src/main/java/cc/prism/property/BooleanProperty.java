@@ -15,3 +15,9 @@ public class BooleanProperty extends Property<Boolean> {
         return value ? "On" : "Off";
     }
 }
+
+
+
+
+
+

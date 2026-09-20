@@ -1,12 +1,12 @@
 package cc.prism.ui.clickgui.widget;
 
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 /** Base class for all inline setting widgets inside the ClickGUI. */
 public abstract class AbstractWidget {
     public static final int HEIGHT = 12;
 
-    public abstract void render(DrawContext ctx, int x, int y, int w, int mx, int my);
+    public abstract void render(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my);
     public int getHeight() { return HEIGHT; }
 
     public boolean mouseClicked(int mx, int my, int button, int x, int y, int w) { return false; }
@@ -19,3 +19,9 @@ public abstract class AbstractWidget {
         return mx >= x && mx <= x + w && my >= y && my <= y + getHeight();
     }
 }
+
+
+
+
+
+

@@ -6,8 +6,8 @@ import cc.prism.property.*;
 import cc.prism.ui.clickgui.widget.*;
 import cc.prism.util.ColorUtil;
 import cc.prism.util.RenderUtil;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +46,9 @@ public class ModuleButton {
         }
     }
 
-    // ── Rendering ─────────────────────────────────────────────────────────────
+    // â”€â”€ Rendering â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-    public void render(DrawContext ctx, int panelX, int panelY, int panelW, int mx, int my, float anim) {
+    public void render(GuiGraphicsExtractor ctx, int panelX, int panelY, int panelW, int mx, int my, float anim) {
         int accent = InterfaceModule.accentColor.getColor();
         boolean enabled = module.isEnabled();
         boolean hovering = isHoveringModule(mx, my, panelX, panelY, panelW);
@@ -66,13 +66,13 @@ public class ModuleButton {
         int nameColor = enabled ? 0xFFFFFFFF : 0xFF888888;
         RenderUtil.drawText(ctx, module.getName(), panelX + 5, panelY + 3, nameColor, false);
 
-        // Gear icon (settings toggle) — right side
+        // Gear icon (settings toggle) â€” right side
         if (!module.getProperties().isEmpty()) {
             int gearX = panelX + panelW - GEAR_SIZE - 3;
             int gearY = panelY + (HEIGHT - GEAR_SIZE) / 2;
             int gearColor = expanded ? accent : 0xFF666666;
             // Draw gear as a simple unicode char
-            RenderUtil.drawText(ctx, "⚙", gearX, gearY - 1, gearColor, false);
+            RenderUtil.drawText(ctx, "âš™", gearX, gearY - 1, gearColor, false);
         }
 
         // Expanded settings
@@ -93,7 +93,7 @@ public class ModuleButton {
         return h;
     }
 
-    // ── Input ─────────────────────────────────────────────────────────────────
+    // â”€â”€ Input â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public boolean mouseClicked(int mx, int my, int button, int panelX, int panelY, int panelW) {
         // Check gear icon
@@ -167,3 +167,9 @@ public class ModuleButton {
     public Module getModule() { return module; }
     public boolean isExpanded() { return expanded; }
 }
+
+
+
+
+
+

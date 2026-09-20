@@ -4,7 +4,7 @@ import cc.prism.module.Category;
 import cc.prism.module.Module;
 
 /**
- * NoPlaceDelay — removes the block-placement cooldown that normally prevents
+ * NoPlaceDelay â€” removes the block-placement cooldown that normally prevents
  * placing more than one block per few ticks.
  * <p>
  * Actual bypass logic lives in {@code MixinClientPlayerInteractionManager};
@@ -29,3 +29,9 @@ public class NoPlaceDelay extends Module {
         }
     }
 }
+
+
+
+
+
+

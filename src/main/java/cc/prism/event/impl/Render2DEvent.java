@@ -1,17 +1,23 @@
 package cc.prism.event.impl;
 
 import cc.prism.event.Event;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class Render2DEvent extends Event {
-    private final DrawContext context;
+    private final GuiGraphicsExtractor context;
     private final float delta;
 
-    public Render2DEvent(DrawContext context, float delta) {
+    public Render2DEvent(GuiGraphicsExtractor context, float delta) {
         this.context = context;
         this.delta = delta;
     }
 
-    public DrawContext getContext() { return context; }
+    public GuiGraphicsExtractor getContext() { return context; }
     public float getDelta() { return delta; }
 }
+
+
+
+
+
+

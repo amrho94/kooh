@@ -6,12 +6,12 @@ import cc.prism.module.Category;
 import cc.prism.module.Module;
 import cc.prism.property.BooleanProperty;
 import cc.prism.property.ColorProperty;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.Camera;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.Camera;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
@@ -29,7 +29,7 @@ public class Tracers extends Module {
     public void onRender2D(Render2DEvent event) {
         if (mc.player == null || mc.world == null) return;
 
-        DrawContext ctx  = event.getContext();
+        GuiGraphicsExtractor ctx  = event.getContext();
         int screenW = mc.getWindow().getScaledWidth();
         int screenH = mc.getWindow().getScaledHeight();
 
@@ -41,15 +41,15 @@ public class Tracers extends Module {
         Matrix4f modelView = new Matrix4f(mc.gameRenderer.getCamera().getRotationMatrix());
 
         Camera  camera = mc.gameRenderer.getCamera();
-        Vec3d   camPos = camera.getPos();
+        Vec3   camPos = camera.position();
         int     col    = color.getColor();
 
-        for (Entity entity : mc.world.getEntities()) {
-            if (entity == mc.player) continue;
-            if (!shouldRender(entity)) continue;
+        for (Entity Entity : mc.world.getEntities()) {
+            if (Entity == mc.player) continue;
+            if (!shouldRender(Entity)) continue;
 
-            Vec3d entityPos = entity.getLerpedPos(event.getDelta())
-                    .add(0, entity.getEyeHeight(entity.getPose()) * 0.5, 0);
+            Vec3 entityPos = Entity.getLerpedPos(event.getDelta())
+                    .add(0, Entity.getEyeHeight(Entity.getPose()) * 0.5, 0);
 
             double rx = entityPos.x - camPos.x;
             double ry = entityPos.y - camPos.y;
@@ -65,12 +65,12 @@ public class Tracers extends Module {
         }
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-    private boolean shouldRender(Entity entity) {
-        if (!(entity instanceof LivingEntity living)) return false;
-        if (living.isDead()) return false;
-        if (entity instanceof PlayerEntity) return players.getValue();
+    private boolean shouldRender(Entity Entity) {
+        if (!(Entity instanceof LivingEntity living)) return false;
+        if (living.isDeadOrDying()) return false;
+        if (Entity instanceof Player) return players.getValue();
         return mobs.getValue();
     }
 
@@ -99,16 +99,16 @@ public class Tracers extends Module {
 
     /**
      * Draws a 1-pixel-wide line between two screen points using Bresenham's
-     * algorithm expressed as a series of {@link DrawContext#fill} calls.
+     * algorithm expressed as a series of {@link GuiGraphicsExtractor#fill} calls.
      */
-    private static void drawLine(DrawContext ctx, int x0, int y0, int x1, int y1, int col) {
+    private static void drawLine(GuiGraphicsExtractor ctx, int x0, int y0, int x1, int y1, int col) {
         int dx = Math.abs(x1 - x0);
         int dy = Math.abs(y1 - y0);
         int sx = x0 < x1 ? 1 : -1;
         int sy = y0 < y1 ? 1 : -1;
         int err = dx - dy;
 
-        int maxSteps = dx + dy + 1; // safety cap – never iterate more pixels than the diagonal
+        int maxSteps = dx + dy + 1; // safety cap â€“ never iterate more pixels than the diagonal
         int steps = 0;
 
         while (steps++ < maxSteps) {
@@ -120,3 +120,9 @@ public class Tracers extends Module {
         }
     }
 }
+
+
+
+
+
+

@@ -4,7 +4,7 @@ import cc.prism.module.Category;
 import cc.prism.module.Module;
 
 /**
- * FastPlace — removes the per-block placement delay so blocks can be placed
+ * FastPlace â€” removes the per-block placement delay so blocks can be placed
  * every tick without the normal cooldown.
  * <p>
  * The actual bypass is applied in {@code MixinClientPlayerInteractionManager}
@@ -29,3 +29,9 @@ public class FastPlace extends Module {
         }
     }
 }
+
+
+
+
+
+

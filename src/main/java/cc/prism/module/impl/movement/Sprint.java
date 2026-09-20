@@ -8,21 +8,21 @@ import cc.prism.property.BooleanProperty;
 import cc.prism.property.ModeProperty;
 
 /**
- * Sprint — automatically keeps the player sprinting.
+ * Sprint â€” automatically keeps the player sprinting.
  *
  * Properties:
- *   Auto Sprint      – master toggle for sprinting logic.
- *   Multi Direction  – sprint even when strafing or moving backward
+ *   Auto Sprint      â€“ master toggle for sprinting logic.
+ *   Multi Direction  â€“ sprint even when strafing or moving backward
  *                      (not just forward), matching "omni-sprint" behaviour.
- *   Keep Sprint      – prevents Minecraft's default behaviour of stopping
+ *   Keep Sprint      â€“ prevents Minecraft's default behaviour of stopping
  *                      sprint after an attack lands (called from
  *                      MixinClientPlayerEntity or by re-asserting sprint
  *                      every tick after a hit).
- *   Mode             – how aggressive the sprint is:
- *       Legit   – only sprint forward with food level > 6 (vanilla-safe).
- *       Silent  – set the sprinting flag directly without sending the sprint
+ *   Mode             â€“ how aggressive the sprint is:
+ *       Legit   â€“ only sprint forward with food level > 6 (vanilla-safe).
+ *       Silent  â€“ set the sprinting flag directly without sending the sprint
  *                 start packet (flag-only, reduces server-side detection).
- *       Strict  – sprint on any forward key press regardless of hunger.
+ *       Strict  â€“ sprint on any forward key press regardless of hunger.
  */
 public class Sprint extends Module {
 
@@ -60,13 +60,13 @@ public class Sprint extends Module {
         switch (mode.getValue()) {
             case "Legit" -> {
                 // Vanilla-safe: only sprint forward with sufficient food.
-                if (forward && mc.player.getHungerManager().getFoodLevel() > 6) {
+                if (forward && mc.player.getFoodData().getFoodLevel() > 6) {
                     mc.player.setSprinting(true);
                 }
             }
 
             case "Silent" -> {
-                // Set the flag only — does not send the sprint-start packet.
+                // Set the flag only â€” does not send the sprint-start packet.
                 // This avoids the ClientboundPlayerAbilitiesPacket sprint flag
                 // toggle that some anti-cheats monitor.
                 if (shouldMove) {
@@ -82,11 +82,17 @@ public class Sprint extends Module {
             }
         }
 
-        // ── Keep Sprint: re-assert sprint immediately after an attack ────────
-        // Minecraft resets sprinting when the player hits an entity; we simply
+        // â”€â”€ Keep Sprint: re-assert sprint immediately after an attack â”€â”€â”€â”€â”€â”€â”€â”€
+        // Minecraft resets sprinting when the player hits an Entity; we simply
         // re-enable it here so the cooldown spike is minimised.
         if (keepSprint.getValue() && shouldMove) {
             mc.player.setSprinting(true);
         }
     }
 }
+
+
+
+
+
+

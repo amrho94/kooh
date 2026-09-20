@@ -1,7 +1,7 @@
 package cc.prism.event.impl;
 
 import cc.prism.event.Event;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.network.protocol.Packet;
 
 public class PacketEvent extends Event {
 
@@ -21,3 +21,9 @@ public class PacketEvent extends Event {
     @Override
     public boolean isCancellable() { return true; }
 }
+
+
+
+
+
+

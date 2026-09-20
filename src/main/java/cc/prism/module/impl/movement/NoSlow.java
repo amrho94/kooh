@@ -5,7 +5,7 @@ import cc.prism.module.Module;
 import cc.prism.property.ModeProperty;
 
 /**
- * NoSlow — removes the movement speed penalty applied while using items
+ * NoSlow â€” removes the movement speed penalty applied while using items
  * (eating, drinking, blocking with a sword, drawing a bow, etc.).
  *
  * The actual speed-penalty bypass is injected via MixinClientPlayerEntity,
@@ -14,9 +14,9 @@ import cc.prism.property.ModeProperty;
  * applies when {@code player.isUsingItem()} is true.
  *
  * Modes:
- *   Vanilla      – suppress the item-use speed modifier while any item is in
+ *   Vanilla      â€“ suppress the item-use speed modifier while any item is in
  *                  use. Works on vanilla servers and most lightly-patched ones.
- *   Hypixel NCP  – same bypass but applies only on the client tick where the
+ *   Hypixel NCP  â€“ same bypass but applies only on the client tick where the
  *                  item-use begins and periodically thereafter, making the
  *                  motion pattern harder for NCP's speed checks to flag.
  *
@@ -34,7 +34,7 @@ public class NoSlow extends Module {
         super("NoSlow", "Removes slowness from blocking/eating", Category.MOVEMENT);
     }
 
-    // ── Static helpers for use by MixinClientPlayerEntity ────────────────────
+    // â”€â”€ Static helpers for use by MixinClientPlayerEntity â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     /**
      * Returns {@code true} when NoSlow is loaded and enabled.
@@ -66,3 +66,9 @@ public class NoSlow extends Module {
         }
     }
 }
+
+
+
+
+
+
